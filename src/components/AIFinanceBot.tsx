@@ -3,7 +3,12 @@ import { Send, Bot, User, Sparkles } from 'lucide-react';
 
 const AIFinanceBot: React.FC = () => {
   const [messages, setMessages] = useState([
-    { id: 1, text: "Hi! I'm KANIMA AI, your smart finance buddy! 💰 Ask me anything about budgeting, investments, loans, or financial planning!", sender: 'bot', timestamp: new Date() }
+    {
+      id: 1,
+      text: "Hi! I'm KANIMA AI, your smart finance buddy! 💰 Ask me anything about budgeting, investments, loans, or financial planning!",
+      sender: 'bot',
+      timestamp: new Date()
+    }
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -35,28 +40,26 @@ const AIFinanceBot: React.FC = () => {
     setIsTyping(true);
 
     try {
-      const prompt = `You are KANIMA AI, a friendly and expert financial advisor chatbot. Answer this financial question in a helpful, conversational way with practical advice. Keep responses under 150 words and use emojis appropriately.
+      const prompt = `You are KANIMA AI, a friendly and expert financial advisor chatbot.
+Answer briefly with practical advice.
 
-User Question: ${inputMessage}
+User Question: ${inputMessage}`;
 
-Provide specific, actionable financial advice. If it's not finance-related, gently redirect to financial topics.`;
-
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
+        // ✅ CALL BACKEND ONLY
+      const response = await fetch("http://localhost:5000/api/chat", {
+        method: "POST",
         headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          model: 'llama-3.1-8b-instant',
-          messages: [{ role: 'user', content: prompt }],
-          max_tokens: 200,
-          temperature: 0.7
-        })
+        body: JSON.stringify({ prompt }),
       });
 
+
       const data = await response.json();
-      const botResponse = data.choices[0]?.message?.content || "I'm here to help with your financial questions! Could you please rephrase that? 💡";
+       console.log(data);
+      const botResponse =
+        data.candidates?.[0]?.content?.parts?.[0]?.text ||
+        "I'm here to help with your financial questions 💡";
 
       setTimeout(() => {
         const botMessage = {
@@ -71,13 +74,15 @@ Provide specific, actionable financial advice. If it's not finance-related, gent
 
     } catch (error) {
       setTimeout(() => {
-        const errorMessage = {
-          id: messages.length + 2,
-          text: "I'm having trouble connecting right now. But I'm here to help with budgeting, investments, loans, and financial planning! Try asking again! 🔄",
-          sender: 'bot',
-          timestamp: new Date()
-        };
-        setMessages(prev => [...prev, errorMessage]);
+        setMessages(prev => [
+          ...prev,
+          {
+            id: messages.length + 2,
+            text: "Connection issue. Please try again 🔄",
+            sender: 'bot',
+            timestamp: new Date()
+          }
+        ]);
         setIsTyping(false);
       }, 1500);
     }
@@ -95,7 +100,8 @@ Provide specific, actionable financial advice. If it's not finance-related, gent
     "Create a monthly budget",
     "Emergency fund tips",
     "Best savings account?",
-    "Home loan advice"
+    "Home loan advice",
+    "How to reduce debt faster?"
   ];
 
   return (
