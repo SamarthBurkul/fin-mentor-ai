@@ -3,29 +3,78 @@ import { Building2, Shield, Users, GraduationCap, Heart, Home, Download, AlertTr
 import jsPDF from 'jspdf';
 
 const GovernmentBenefits: React.FC = () => {
-  const [analysisMode, setAnalysisMode] = useState('profile');
+  const [analysisMode, setAnalysisMode] = useState("profile");
   const [userProfile, setUserProfile] = useState({
-    age: '', occupation: '', income: '', location: '', category: '', gender: '', maritalStatus: '', education: ''
+    age: "",
+    occupation: "",
+    income: "",
+    location: "",
+    category: "",
+    gender: "",
+    maritalStatus: "",
+    education: "",
   });
-  const [schemeName, setSchemeName] = useState('');
+  const [schemeName, setSchemeName] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [benefits, setBenefits] = useState<any>(null);
   const [schemeAnalysis, setSchemeAnalysis] = useState<any>(null);
+  const [error, setError] = useState("");
+
+  // shared Perplexity helper
+  const callPerplexity = async (prompt: string) => {
+    const response = await fetch("https://api.perplexity.ai/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_PERPLEXITY_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "sonar",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are FinSaarthi Government Benefits AI, an expert on Indian central and state welfare schemes. Always answer in India context and be concise.",
+          },
+          { role: "user", content: prompt },
+        ],
+        max_tokens: 1200,
+        temperature: 0.6,
+      }),
+    });
+
+    if (!response.ok) {
+      const body = await response.text();
+      console.error("Perplexity GovBenefits error:", body);
+      throw new Error(`API error ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content ?? "";
+  };
 
   const analyzeScheme = async () => {
+    if (!schemeName.trim()) return;
+
     setIsAnalyzing(true);
+    setError("");
+    setSchemeAnalysis(null);
 
     try {
-      const prompt = `Analyze this Indian government scheme: ${schemeName}
+      const prompt = `
+You are an expert on Indian government schemes.
 
-Provide detailed analysis in JSON format:
+Analyze this scheme in India: "${schemeName}".
+
+Return ONLY JSON in this exact shape:
+
 {
-  "schemeName": "Official name",
-  "type": "Central/State",
-  "category": "Health/Education/Pension",
-  "objective": "Main purpose",
-  "benefits": "Financial and other benefits",
-  "eligibility": "Who can apply",
+  "schemeName": "string",
+  "type": "Central | State | Local",
+  "category": "Health | Education | Pension | Housing | Women | SC/ST | Other",
+  "objective": "short description",
+  "benefits": "detailed text about monetary and non-monetary benefits",
+  "eligibility": "detailed text about who is eligible",
   "documents": ["Required documents"],
   "applicationProcess": "How to apply",
   "processingTime": "Approval time",
@@ -34,167 +83,97 @@ Provide detailed analysis in JSON format:
   "fraudAlerts": ["Common scams"],
   "verdict": "Overall assessment"
 }
+`;
 
-No formatting symbols. Only JSON.`;
+      const content = await callPerplexity(prompt);
 
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'llama-3.1-8b-instant',
-          messages: [{ role: 'user', content: prompt }],
-          max_tokens: 1000,
-          temperature: 0.7
-        })
-      });
-
-      const data = await response.json();
-      const content = data.choices[0]?.message?.content || '{}';
-      
-      try {
-        const result = JSON.parse(content);
-        setSchemeAnalysis(result);
-      } catch {
-        setSchemeAnalysis({
-          schemeName: schemeName,
-          type: "Government Scheme",
-          category: "General",
-          objective: "Scheme analysis completed",
-          benefits: "Financial assistance and support services",
-          eligibility: "As per government guidelines",
-          documents: ["Aadhaar Card", "Income Certificate"],
-          applicationProcess: "Apply through official channels",
-          processingTime: "15-30 days",
-          pros: ["Government backed", "Financial support"],
-          cons: ["Documentation required", "Processing time"],
-          fraudAlerts: ["Beware of fake agents"],
-          verdict: "Verify through official government sources"
-        });
+      const start = content.indexOf("{");
+      const end = content.lastIndexOf("}");
+      if (start === -1 || end === -1) {
+        throw new Error("No JSON found in Perplexity response");
       }
-    } catch (error) {
-      setSchemeAnalysis({
-        schemeName: schemeName,
-        verdict: "Unable to analyze. Please verify through official channels."
-      });
-    }
 
-    setIsAnalyzing(false);
+      const jsonText = content.slice(start, end + 1);
+      const result = JSON.parse(jsonText);
+      setSchemeAnalysis(result);
+    } catch (err) {
+      console.error("analyzeScheme error:", err);
+      setError(
+        "Unable to analyze this scheme right now. Please try again or verify on official portals."
+      );
+      setSchemeAnalysis({
+        schemeName,
+        verdict: "Unable to analyze. Please verify through official channels.",
+      });
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const analyzeBenefits = async () => {
+      console.log("analyzeBenefits clicked", userProfile);
+
     setIsAnalyzing(true);
+    setError("");
+    setBenefits(null);
 
     try {
-      const prompt = `Analyze government benefits for this Indian citizen:
+      const prompt = `
+You are an expert Indian government welfare advisor.
 
-USER PROFILE:
-- Age: ${userProfile.age} years
+User profile:
+- Age: ${userProfile.age}
 - Occupation: ${userProfile.occupation}
 - Annual Income: ₹${userProfile.income}
-- Location: ${userProfile.location}
+- State: ${userProfile.location}
 - Category: ${userProfile.category}
 - Gender: ${userProfile.gender}
 - Marital Status: ${userProfile.maritalStatus}
-- Education: ${userProfile.education}
+- Education Level: ${userProfile.education}
 
-Find ALL eligible government schemes (Central + State + Special) and provide detailed analysis in JSON format:
+1) List 5–8 most relevant central or ${userProfile.location || "state"} schemes this user is likely eligible for.
+2) Return ONLY valid JSON in this exact shape:
+
 {
   "eligibleSchemes": [
     {
-      "name": "Scheme Name",
-      "type": "Central/State/Special",
-      "category": "Health/Education/Pension/Subsidy/Employment",
-      "benefit": "₹Amount or benefit description",
-      "frequency": "Monthly/Yearly/One-time",
-      "eligibilityReason": "Why user is eligible",
-      "documents": ["Document 1", "Document 2"],
-      "applicationProcess": ["Step 1", "Step 2", "Step 3"],
-      "processingTime": "Time duration",
-      "officialWebsite": "Website URL or offline process"
+      "name": "string",
+      "type": "Central | State | Local",
+      "category": "Pension | Education | Housing | Health | Women | SC/ST | Other",
+      "benefit": "short benefit text",
+      "frequency": "One-time | Monthly | Annual | As per rules",
+      "documents": ["Aadhaar Card", "Ration Card"],
+      "processingTime": "string"
     }
   ],
-  "totalAnnualBenefit": "₹Total estimated yearly benefit",
-  "prioritySchemes": ["Top 3 most important schemes"],
-  "emergencySchemes": ["Emergency relief schemes if applicable"],
-  "futureEligibility": ["Schemes user may become eligible for"],
-  "documentGuidance": {
-    "required": ["Essential documents needed"],
-    "missing": ["Documents user might need to obtain"],
-    "tips": ["Important application tips"]
-  },
-  "fraudWarnings": ["Common scams to avoid"],
-  "lifeStageAdvice": "Personalized advice based on age and situation"
+  "totalAnnualBenefit": "string describing estimated yearly benefit",
+  "notes": "short advice on how to apply and avoid fraud"
 }
+`;
 
-Focus on real Indian government schemes. No formatting symbols. Only JSON.`;
+      const content = await callPerplexity(prompt);
 
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'llama-3.1-8b-instant',
-          messages: [{ role: 'user', content: prompt }],
-          max_tokens: 1500,
-          temperature: 0.7
-        })
-      });
-
-      const data = await response.json();
-      const content = data.choices[0]?.message?.content || '{}';
-      
-      try {
-        const result = JSON.parse(content);
-        setBenefits(result);
-      } catch {
-        setBenefits({
-          eligibleSchemes: [
-            {
-              name: "Pradhan Mantri Jan Dhan Yojana",
-              type: "Central",
-              category: "Banking",
-              benefit: "Free bank account with insurance",
-              frequency: "One-time",
-              eligibilityReason: "Available for all citizens",
-              documents: ["Aadhaar Card", "PAN Card"],
-              applicationProcess: ["Visit nearest bank", "Fill application form", "Submit documents"],
-              processingTime: "7-15 days",
-              officialWebsite: "pmjdy.gov.in"
-            }
-          ],
-          totalAnnualBenefit: "₹12,000 - ₹50,000",
-          prioritySchemes: ["PM Jan Dhan Yojana", "Ayushman Bharat", "PM Kisan"],
-          emergencySchemes: ["PM Garib Kalyan Yojana"],
-          futureEligibility: ["Pension schemes after age 60"],
-          documentGuidance: {
-            required: ["Aadhaar Card", "Income Certificate", "Bank Account"],
-            missing: ["Caste Certificate", "Domicile Certificate"],
-            tips: ["Keep documents updated", "Apply online when possible"]
-          },
-          fraudWarnings: ["Beware of fake agents demanding money", "Only use official government websites"],
-          lifeStageAdvice: "Focus on education and skill development schemes at your age"
-        });
+      const start = content.indexOf("{");
+      const end = content.lastIndexOf("}");
+      if (start === -1 || end === -1) {
+        throw new Error("No JSON found in Perplexity response");
       }
-    } catch (error) {
-      setBenefits({
-        eligibleSchemes: [],
-        totalAnnualBenefit: "₹0",
-        prioritySchemes: [],
-        emergencySchemes: [],
-        futureEligibility: [],
-        documentGuidance: { required: [], missing: [], tips: [] },
-        fraudWarnings: ["Always verify schemes through official channels"],
-        lifeStageAdvice: "Consult with local government offices for personalized guidance"
-      });
-    }
 
-    setIsAnalyzing(false);
+      const jsonText = content.slice(start, end + 1);
+      const parsed = JSON.parse(jsonText);
+      setBenefits(parsed);
+    } catch (err) {
+      console.error("analyzeBenefits error:", err);
+      setError(
+        "Unable to find benefits right now. Please try again in a few minutes."
+      );
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
+
+  // ...keep the rest of your JSX exactly as it is below
+
 
   const getCategoryIcon = (category: string) => {
     switch (category.toLowerCase()) {
@@ -579,7 +558,7 @@ Focus on real Indian government schemes. No formatting symbols. Only JSON.`;
                       // Header
                       pdf.setFontSize(20);
                       pdf.setTextColor(0, 229, 255);
-                      pdf.text('KANIMA GOVERNMENT BENEFITS REPORT', 20, 30);
+                      pdf.text('FinSaarthi GOVERNMENT BENEFITS REPORT', 20, 30);
                       
                       // User Profile
                       pdf.setFontSize(12);
@@ -628,7 +607,7 @@ Focus on real Indian government schemes. No formatting symbols. Only JSON.`;
                       // Footer
                       pdf.setFontSize(8);
                       pdf.setTextColor(128, 128, 128);
-                      pdf.text('Generated by KANIMA AI - Your Digital Government Assistant', 20, 280);
+                      pdf.text('Generated by FinSaarthi AI - Your Digital Government Assistant', 20, 280);
                       
                       pdf.save(`Government_Benefits_Report_${userProfile.age}yr_${userProfile.occupation}.pdf`);
                     }}

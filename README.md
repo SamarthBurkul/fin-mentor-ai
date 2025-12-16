@@ -1,8 +1,8 @@
-# KANIMA - Your Smart Finance Buddy 💰
+# FinSaarthi - Your Smart Finance Guide 💰
 
 **AI-Powered Financial Platform for Everyone**
 
-KANIMA is a comprehensive financial management platform that combines AI technology with practical financial tools to help users manage money, track expenses, protect against fraud, and achieve financial goals.
+FinSaarthi is a comprehensive financial management platform that combines AI technology with practical financial tools to help users manage money, track expenses, protect against fraud, and achieve financial goals.
 
 ---
 
@@ -98,7 +98,7 @@ KANIMA is a comprehensive financial management platform that combines AI technol
 - FD Calculator
 - Business Calculator
 
-### 13. **KANIMA AI Assistant**
+### 13. **FinSaarthi AI Assistant**
 - 24/7 AI chatbot for financial queries
 - Conversational financial advice
 - Quick question suggestions
