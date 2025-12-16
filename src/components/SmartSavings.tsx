@@ -1,0 +1,553 @@
+import React, { useState, useEffect } from 'react';
+import { PiggyBank, Target, TrendingUp, Award, Download, Calendar, Coins, Zap } from 'lucide-react';
+import jsPDF from 'jspdf';
+
+const SmartSavings: React.FC = () => {
+  const [dailyGoal, setDailyGoal] = useState(20);
+  const [customAmount, setCustomAmount] = useState('');
+  const [currentSavings, setCurrentSavings] = useState(0);
+  const [streak, setStreak] = useState(0);
+  const [selectedGoal, setSelectedGoal] = useState('');
+  const [goalPrice, setGoalPrice] = useState('');
+  const [todaySaved, setTodaySaved] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [aiAnalysis, setAiAnalysis] = useState<any>(null);
+  const [piggyAnimation, setPiggyAnimation] = useState(false);
+
+  const goals = [
+    { name: 'Mobile Phone', price: 15000 },
+    { name: 'Laptop', price: 50000 },
+    { name: 'Bike', price: 80000 },
+    { name: 'Emergency Fund', price: 100000 },
+    { name: 'Travel', price: 25000 },
+    { name: 'College Fees', price: 200000 }
+  ];
+
+  const calculateProjections = (amount: number) => ({
+    tenDays: amount * 10,
+    oneMonth: amount * 30,
+    hundredDays: amount * 100,
+    oneYear: amount * 365
+  });
+
+  const markTodaySaved = () => {
+    if (!todaySaved) {
+      setCurrentSavings(prev => prev + dailyGoal);
+      setStreak(prev => prev + 1);
+      setTodaySaved(true);
+      setPiggyAnimation(true);
+      setTimeout(() => setPiggyAnimation(false), 1000);
+    }
+  };
+
+  const analyzeHabits = async () => {
+    setIsAnalyzing(true);
+
+    try {
+      const savingsRate = currentSavings > 0 ? (currentSavings / (streak || 1)) : dailyGoal;
+      const monthlyProjection = savingsRate * 30;
+      const yearlyProjection = savingsRate * 365;
+      
+      const prompt = `Analyze my savings and provide practical financial advice:
+
+MY SAVINGS DATA:
+- Daily Saving Goal: ₹${dailyGoal}
+- Total Amount Saved: ₹${currentSavings}
+- Saving Streak: ${streak} days
+- Average Daily Savings: ₹${savingsRate.toFixed(0)}
+- Monthly Projection: ₹${monthlyProjection.toFixed(0)}
+- Yearly Projection: ₹${yearlyProjection.toFixed(0)}
+- Current Goal: ${selectedGoal || 'No goal set'}
+- Goal Target: ₹${goalPrice || '0'}
+- Today's Status: ${todaySaved ? 'Saved' : 'Not saved yet'}
+
+Provide practical savings analysis in JSON format:
+{
+  "savingsAssessment": {
+    "currentPerformance": "Excellent/Good/Average/Poor",
+    "savingsRate": "Daily average analysis",
+    "progressEvaluation": "How well user is doing"
+  },
+  "practicalTips": [
+    "Specific tip 1 to save more money",
+    "Specific tip 2 to reduce expenses",
+    "Specific tip 3 to increase savings"
+  ],
+  "smartAdvice": {
+    "increaseGoal": "Should I increase my daily goal and by how much",
+    "expenseReduction": "Where can I cut expenses to save more",
+    "savingStrategy": "Best strategy for my current situation"
+  },
+  "goalGuidance": {
+    "timeToGoal": "Realistic time to achieve current goal",
+    "goalFeasibility": "Is my goal realistic with current savings",
+    "alternativeGoals": "Better goal suggestions if needed"
+  },
+  "moneyManagement": {
+    "emergencyFund": "Emergency fund advice based on my savings",
+    "investmentReadiness": "When should I start investing",
+    "budgetOptimization": "How to optimize my budget"
+  },
+  "nextSteps": [
+    "Action 1 to improve savings",
+    "Action 2 to reach goals faster",
+    "Action 3 for better money management"
+  ]
+}
+
+No formatting symbols. Only JSON.`;
+
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'llama-3.1-8b-instant',
+          messages: [{ role: 'user', content: prompt }],
+          max_tokens: 1000,
+          temperature: 0.7
+        })
+      });
+
+      const data = await response.json();
+      const content = data.choices[0]?.message?.content || '{}';
+      
+      try {
+        const result = JSON.parse(content);
+        setAiAnalysis(result);
+      } catch {
+        setAiAnalysis({
+          savingsAssessment: {
+            currentPerformance: currentSavings > 1000 ? "Good" : "Getting Started",
+            savingsRate: `₹${savingsRate.toFixed(0)} per day average`,
+            progressEvaluation: "Building good saving habits"
+          },
+          practicalTips: [
+            "Track daily expenses to find saving opportunities",
+            "Use the 50-30-20 rule: 50% needs, 30% wants, 20% savings",
+            "Automate savings to make it effortless"
+          ],
+          smartAdvice: {
+            increaseGoal: dailyGoal < 50 ? "Consider increasing to ₹" + (dailyGoal + 10) : "Current goal is good",
+            expenseReduction: "Review subscription services and dining out expenses",
+            savingStrategy: "Start with small amounts and gradually increase"
+          },
+          goalGuidance: {
+            timeToGoal: goalPrice ? `${Math.ceil((parseInt(goalPrice) - currentSavings) / dailyGoal)} days` : "Set a goal first",
+            goalFeasibility: "Your goal is achievable with consistent saving",
+            alternativeGoals: "Consider emergency fund as first priority"
+          },
+          moneyManagement: {
+            emergencyFund: "Aim for 3-6 months of expenses as emergency fund",
+            investmentReadiness: "Start investing after building emergency fund",
+            budgetOptimization: "Use 50-30-20 budgeting method"
+          },
+          nextSteps: [
+            "Increase daily goal by ₹5-10 when comfortable",
+            "Set up automatic transfers to savings account",
+            "Review and reduce unnecessary expenses"
+          ]
+        });
+      }
+    } catch (error) {
+      setAiAnalysis({
+        savingsAssessment: {
+          currentPerformance: "Good",
+          savingsRate: `₹${dailyGoal} daily target`,
+          progressEvaluation: "On track with savings goals"
+        },
+        practicalTips: [
+          "Review monthly expenses to find savings",
+          "Use cashback apps for purchases",
+          "Cook at home more often"
+        ],
+        smartAdvice: {
+          increaseGoal: "Gradually increase savings as income grows",
+          expenseReduction: "Track spending for better control",
+          savingStrategy: "Consistency beats perfection"
+        },
+        nextSteps: [
+          "Continue current saving habit",
+          "Set specific financial goals",
+          "Consider investment options"
+        ]
+      });
+    }
+
+    setIsAnalyzing(false);
+  };
+
+  const projections = calculateProjections(dailyGoal);
+  const goalProgress = selectedGoal && goalPrice ? (currentSavings / parseInt(goalPrice)) * 100 : 0;
+  const daysToGoal = selectedGoal && goalPrice ? Math.ceil((parseInt(goalPrice) - currentSavings) / dailyGoal) : 0;
+
+  return (
+    <section className="py-16 bg-jet-black relative overflow-hidden">
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-10 left-1/4 w-64 h-64 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 right-1/4 w-64 h-64 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full blur-3xl"></div>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-playfair font-bold text-soft-white mb-4">
+            Smart <span className="bg-gradient-to-r from-green-400 via-lime-400 to-emerald-400 bg-clip-text text-transparent">Savings</span>
+          </h2>
+          <p className="text-lg text-white max-w-2xl mx-auto font-inter mb-4">
+            Build wealth one day at a time with AI-powered habit tracking
+          </p>
+          <p className="text-blue-400 font-semibold">
+            "You don't need a high salary to become wealthy. You only need the habit."
+          </p>
+        </div>
+
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Daily Goal Selection */}
+            <div className="bg-charcoal-gray rounded-2xl p-8 border border-slate-gray/20">
+              <h3 className="text-xl font-semibold mb-6 text-soft-white flex items-center font-inter">
+                <Target className="w-6 h-6 mr-2 text-emerald-400" />
+                Daily Saving Goal
+              </h3>
+              
+              <div className="space-y-4">
+                <div className="grid grid-cols-3 gap-3">
+                  {[10, 20, 50].map(amount => (
+                    <button
+                      key={amount}
+                      onClick={() => setDailyGoal(amount)}
+                      className={`p-3 rounded-lg font-semibold transition-all ${
+                        dailyGoal === amount
+                          ? 'bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-500 text-white'
+                          : 'border border-slate-gray/30 text-white hover:bg-emerald-500/10'
+                      }`}
+                    >
+                      ₹{amount}
+                    </button>
+                  ))}
+                </div>
+                
+                <div>
+                  <input
+                    type="number"
+                    placeholder="Custom amount"
+                    value={customAmount}
+                    onChange={(e) => {
+                      setCustomAmount(e.target.value);
+                      if (e.target.value) setDailyGoal(parseInt(e.target.value));
+                    }}
+                    className="w-full bg-jet-black border border-slate-gray/30 rounded-xl px-4 py-3 text-soft-white placeholder-slate-gray focus:border-emerald-400 focus:outline-none font-inter"
+                  />
+                </div>
+
+                {/* Projections */}
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-white">10 days:</span>
+                    <span className="text-emerald-400 font-semibold">₹{projections.tenDays.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-white">1 month:</span>
+                    <span className="text-blue-400 font-semibold">₹{projections.oneMonth.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-white">100 days:</span>
+                    <span className="text-orange-400 font-semibold">₹{projections.hundredDays.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-white">1 year:</span>
+                    <span className="text-emerald-400 font-semibold">₹{projections.oneYear.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Digital Piggy Bank */}
+            <div className="bg-charcoal-gray rounded-2xl p-8 border border-slate-gray/20">
+              <h3 className="text-xl font-semibold mb-6 text-soft-white flex items-center font-inter">
+                <PiggyBank className="w-6 h-6 mr-2 text-emerald-400" />
+                Your Digital Piggy Bank
+              </h3>
+              
+              <div className="text-center space-y-6">
+                <div className={`transition-transform duration-500 ${piggyAnimation ? 'scale-110' : 'scale-100'}`}>
+                  <PiggyBank className="w-24 h-24 mx-auto text-emerald-400" />
+                  {piggyAnimation && (
+                    <div className="flex justify-center space-x-1 mt-2">
+                      <Coins className="w-4 h-4 text-orange-400 animate-bounce" />
+                      <Coins className="w-4 h-4 text-orange-400 animate-bounce" style={{animationDelay: '0.1s'}} />
+                      <Coins className="w-4 h-4 text-orange-400 animate-bounce" style={{animationDelay: '0.2s'}} />
+                    </div>
+                  )}
+                </div>
+                
+                <div>
+                  <div className="text-3xl font-bold text-emerald-400 mb-2">
+                    ₹{currentSavings.toLocaleString()}
+                  </div>
+                  <div className="text-sm text-slate-gray">Total Saved</div>
+                </div>
+
+                <button
+                  onClick={markTodaySaved}
+                  disabled={todaySaved}
+                  className={`bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-500 text-white px-8 py-4 rounded-xl font-semibold hover:scale-105 transition-all duration-300 w-full ${todaySaved ? 'opacity-50' : ''}`}
+                >
+                  {todaySaved ? '✅ Today\'s Goal Complete!' : `💰 Save ₹${dailyGoal} Today`}
+                </button>
+
+                <div className="flex justify-between text-sm">
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-blue-400">{streak}</div>
+                    <div className="text-white">Day Streak</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-orange-400">{Math.floor(currentSavings / dailyGoal)}</div>
+                    <div className="text-white">Days Saved</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Goal Attachment */}
+            <div className="bg-charcoal-gray rounded-2xl p-8 border border-slate-gray/20">
+              <h3 className="text-xl font-semibold mb-6 text-soft-white flex items-center font-inter">
+                <Award className="w-6 h-6 mr-2 text-emerald-400" />
+                Life Goals
+              </h3>
+              
+              <div className="space-y-4">
+                <select
+                  value={selectedGoal}
+                  onChange={(e) => {
+                    setSelectedGoal(e.target.value);
+                    const goal = goals.find(g => g.name === e.target.value);
+                    if (goal) setGoalPrice(goal.price.toString());
+                  }}
+                  className="w-full bg-jet-black border border-slate-gray/30 rounded-xl px-4 py-3 text-soft-white focus:border-emerald-400 focus:outline-none font-inter"
+                >
+                  <option value="">Select a goal</option>
+                  {goals.map(goal => (
+                    <option key={goal.name} value={goal.name}>{goal.name}</option>
+                  ))}
+                  <option value="custom">Custom Goal</option>
+                </select>
+
+                {selectedGoal === 'custom' && (
+                  <input
+                    type="number"
+                    placeholder="Goal price (₹)"
+                    value={goalPrice}
+                    onChange={(e) => setGoalPrice(e.target.value)}
+                    className="w-full bg-jet-black border border-slate-gray/30 rounded-xl px-4 py-3 text-soft-white placeholder-slate-gray focus:border-emerald-400 focus:outline-none font-inter"
+                  />
+                )}
+
+                {selectedGoal && goalPrice && (
+                  <div className="space-y-3">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-white">Progress:</span>
+                      <span className="text-emerald-400">{goalProgress.toFixed(1)}%</span>
+                    </div>
+                    
+                    <div className="w-full bg-jet-black rounded-full h-3">
+                      <div 
+                        className="bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-500 h-3 rounded-full transition-all duration-500"
+                        style={{ width: `${Math.min(goalProgress, 100)}%` }}
+                      ></div>
+                    </div>
+                    
+                    <div className="text-center">
+                      <div className="text-lg font-bold text-soft-white">
+                        ₹{(parseInt(goalPrice) - currentSavings).toLocaleString()} remaining
+                      </div>
+                      <div className="text-sm text-white">
+                        {daysToGoal > 0 ? `${daysToGoal} days to go` : 'Goal achieved!'}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* AI Analysis Section */}
+          <div className="mt-8 grid lg:grid-cols-2 gap-8">
+            <div className="bg-charcoal-gray rounded-2xl p-8 border border-slate-gray/20">
+              <h3 className="text-xl font-semibold mb-6 text-soft-white flex items-center">
+                <Zap className="w-6 h-6 mr-2 text-emerald-400" />
+                AI Savings Analysis
+              </h3>
+              
+              <button
+                onClick={analyzeHabits}
+                disabled={isAnalyzing}
+                className="bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-500 text-white px-8 py-4 rounded-xl font-semibold hover:scale-105 transition-all duration-300 w-full mb-6 disabled:opacity-50"
+              >
+                {isAnalyzing ? (
+                  <span className="flex items-center justify-center space-x-2">
+                    <div className="w-4 h-4 border-2 border-deep-black border-t-transparent rounded-full animate-spin"></div>
+                    <span>Analyzing Your Habits...</span>
+                  </span>
+                ) : (
+                  <>📊 Get Savings Tips & Advice</>
+                )}
+              </button>
+
+              {aiAnalysis && (
+                <div className="space-y-4">
+                  <div className="p-4 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-lg">
+                    <h4 className="font-semibold text-white mb-2">Savings Performance</h4>
+                    <p className="text-sm text-white">{aiAnalysis.savingsAssessment?.progressEvaluation}</p>
+                    <p className="text-xs text-white mt-1">{aiAnalysis.savingsAssessment?.savingsRate}</p>
+                  </div>
+                  
+                  <div className="p-4 bg-emerald-500/10 rounded-lg">
+                    <h4 className="font-semibold text-emerald-400 mb-2">Smart Tips:</h4>
+                    <ul className="text-sm text-white space-y-1">
+                      {aiAnalysis.practicalTips?.map((tip: string, i: number) => (
+                        <li key={i}>• {tip}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  <div className="p-4 bg-blue-500/10 rounded-lg">
+                    <h4 className="font-semibold text-blue-400 mb-2">Next Steps:</h4>
+                    <ul className="text-sm text-white space-y-1">
+                      {aiAnalysis.nextSteps?.map((step: string, i: number) => (
+                        <li key={i}>{i + 1}. {step}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="bg-charcoal-gray rounded-2xl p-8 border border-slate-gray/20">
+              <h3 className="text-xl font-semibold mb-6 text-soft-white flex items-center">
+                <TrendingUp className="w-6 h-6 mr-2 text-emerald-400" />
+                Progress & Milestones
+              </h3>
+              
+              <div className="space-y-4">
+                {aiAnalysis?.smartAdvice && (
+                  <div className="space-y-3">
+                    <div className="p-3 bg-emerald-500/10 rounded-lg">
+                      <h5 className="font-semibold text-emerald-400 mb-1 text-sm">Goal Increase:</h5>
+                      <p className="text-xs text-white">{aiAnalysis.smartAdvice.increaseGoal}</p>
+                    </div>
+                    <div className="p-3 bg-teal-500/10 rounded-lg">
+                      <h5 className="font-semibold text-teal-400 mb-1 text-sm">Expense Reduction:</h5>
+                      <p className="text-xs text-white">{aiAnalysis.smartAdvice.expenseReduction}</p>
+                    </div>
+                    <div className="p-3 bg-blue-500/10 rounded-lg">
+                      <h5 className="font-semibold text-blue-400 mb-1 text-sm">Strategy:</h5>
+                      <p className="text-xs text-white">{aiAnalysis.smartAdvice.savingStrategy}</p>
+                    </div>
+                  </div>
+                )}
+
+                {aiAnalysis?.goalGuidance && (
+                  <div className="p-4 bg-gradient-to-r from-teal-500/10 to-emerald-500/10 rounded-lg">
+                    <h4 className="font-semibold text-teal-400 mb-2">Goal Guidance</h4>
+                    <p className="text-sm text-white">{aiAnalysis.goalGuidance.goalFeasibility}</p>
+                    <p className="text-xs text-white mt-1">Time to goal: {aiAnalysis.goalGuidance.timeToGoal}</p>
+                  </div>
+                )}
+
+                {/* Download Report */}
+                <button 
+                  onClick={() => {
+                    const pdf = new jsPDF();
+                    
+                    // Header
+                    pdf.setFontSize(20);
+                    pdf.setTextColor(16, 185, 129);
+                    pdf.text('KANIMA SMART SAVINGS REPORT', 20, 30);
+                    
+                    // Savings Summary
+                    pdf.setFontSize(14);
+                    pdf.setTextColor(0, 0, 0);
+                    pdf.text('SAVINGS SUMMARY', 20, 50);
+                    pdf.setFontSize(10);
+                    pdf.text(`Daily Goal: ₹${dailyGoal}`, 20, 65);
+                    pdf.text(`Current Savings: ₹${currentSavings.toLocaleString()}`, 20, 75);
+                    pdf.text(`Streak: ${streak} days`, 20, 85);
+                    pdf.text(`Selected Goal: ${selectedGoal || 'None'}`, 20, 95);
+                    
+                    let yPos = 115;
+                    
+                    // Projections
+                    pdf.setFontSize(14);
+                    pdf.text('WEALTH PROJECTIONS', 20, yPos);
+                    yPos += 15;
+                    pdf.setFontSize(10);
+                    pdf.text(`10 Days: ₹${projections.tenDays.toLocaleString()}`, 20, yPos);
+                    yPos += 8;
+                    pdf.text(`1 Month: ₹${projections.oneMonth.toLocaleString()}`, 20, yPos);
+                    yPos += 8;
+                    pdf.text(`100 Days: ₹${projections.hundredDays.toLocaleString()}`, 20, yPos);
+                    yPos += 8;
+                    pdf.text(`1 Year: ₹${projections.oneYear.toLocaleString()}`, 20, yPos);
+                    yPos += 20;
+                    
+                    // AI Analysis
+                    if (aiAnalysis) {
+                      pdf.setFontSize(14);
+                      pdf.text('AI SAVINGS ANALYSIS', 20, yPos);
+                      yPos += 15;
+                      pdf.setFontSize(10);
+                      pdf.text(`Performance: ${aiAnalysis.savingsAssessment?.currentPerformance}`, 20, yPos);
+                      yPos += 8;
+                      pdf.text(`Savings Rate: ${aiAnalysis.savingsAssessment?.savingsRate}`, 20, yPos);
+                      yPos += 15;
+                      
+                      if (aiAnalysis.practicalTips?.length > 0) {
+                        pdf.setFontSize(12);
+                        pdf.text('PRACTICAL TIPS', 20, yPos);
+                        yPos += 10;
+                        pdf.setFontSize(10);
+                        aiAnalysis.practicalTips.forEach((tip: string, i: number) => {
+                          pdf.text(`${i + 1}. ${tip}`, 20, yPos);
+                          yPos += 8;
+                        });
+                        yPos += 5;
+                      }
+                      
+                      if (aiAnalysis.nextSteps?.length > 0) {
+                        pdf.setFontSize(12);
+                        pdf.text('NEXT STEPS', 20, yPos);
+                        yPos += 10;
+                        pdf.setFontSize(10);
+                        aiAnalysis.nextSteps.forEach((step: string, i: number) => {
+                          pdf.text(`${i + 1}. ${step}`, 20, yPos);
+                          yPos += 8;
+                        });
+                      }
+                    }
+                    
+                    // Footer
+                    pdf.setFontSize(8);
+                    pdf.setTextColor(128, 128, 128);
+                    pdf.text('Generated by KANIMA AI - Smart Savings Tracker', 20, 280);
+                    
+                    pdf.save(`Smart_Savings_Report_${new Date().toISOString().split('T')[0]}.pdf`);
+                  }}
+                  className="bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-500 text-white px-8 py-4 rounded-xl font-semibold hover:scale-105 transition-all duration-300 w-full flex items-center justify-center space-x-2"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Download Savings Report (PDF)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default SmartSavings;

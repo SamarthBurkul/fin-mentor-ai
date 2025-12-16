@@ -1,0 +1,78 @@
+const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
+const GROQ_MODEL = 'llama-3.1-8b-instant';
+
+const generateMock200WordAnalysis = (calculatorType: string, values: any, result: any) => {
+  const analyses = {
+    expense: `Your spending analysis reveals important patterns for financial optimization. With ₹${values.totalExpenses} spent across ${values.transactionCount} transactions, your average transaction of ₹${Math.round(values.averageTransaction)} shows ${values.averageTransaction > 500 ? 'higher-value purchases requiring careful monitoring' : 'controlled spending habits'}. Your top spending category ${values.topCategory} represents the best optimization opportunity. Consider implementing the 50-30-20 budget rule where 50% goes to needs, 30% to wants, and 20% to savings. Track daily expenses to identify unnecessary purchases and impulse buying patterns. ${values.categories?.length > 5 ? 'Your diverse spending across multiple categories suggests good lifestyle balance but may benefit from consolidation' : 'Your focused spending categories indicate disciplined financial behavior'}. Implement the 24-hour rule for non-essential purchases above ₹1000. Use digital payment alerts to maintain real-time expense awareness. Consider automated savings transfers immediately after salary credit to avoid overspending. Your ${values.period} spending pattern shows ${values.transactionCount > 10 ? 'frequent transactions that need monitoring' : 'controlled transaction frequency'}. Focus on reducing your top 2 expense categories by 15% next month. Build an emergency fund covering 6 months of current spending levels. Set category-wise monthly limits and review weekly. Use cashback credit cards for regular expenses to earn rewards. Consider bulk purchases for essentials to reduce per-unit costs. Track seasonal spending patterns to plan better budgets.`,
+    business: `Your business analysis shows strong potential for growth and optimization. With ₹${values.totalSales} in total sales across ${values.totalTransactions} transactions over ${values.sessionsCount} days, your average daily sales of ₹${Math.round(values.averageDailySales)} indicates ${values.averageDailySales > 5000 ? 'healthy business performance with room for strategic expansion' : 'steady operations that can benefit from targeted growth strategies'}. Your best performing day generated ₹${values.bestDay?.totalSales} while your lowest was ₹${values.worstDay?.totalSales}, showing variance that suggests opportunities for consistency improvement. Focus on identifying peak hour patterns and customer behavior trends. Consider implementing inventory optimization during high-sales periods and promotional strategies during slower days. Your transaction frequency indicates ${values.totalTransactions > 100 ? 'active customer engagement' : 'potential for increased customer acquisition'}. Implement customer loyalty programs to increase repeat business and average transaction value. Track seasonal patterns to optimize stock levels and pricing strategies. Consider digital payment integration to reduce transaction time and improve customer experience. Monitor competitor pricing and adjust strategies accordingly. Build emergency cash reserves covering 3 months of operational expenses. Invest in customer relationship management to understand buying patterns better. Focus on increasing average transaction value through upselling and cross-selling techniques.`,
+    emi: `Your EMI of ₹${result.monthlyPayment} represents a manageable financial commitment that aligns well with standard affordability ratios. At ${values.rate}% interest rate over ${values.tenure} months, you'll pay ₹${result.totalInterest} in total interest. This loan structure supports your career growth by providing immediate access to assets while maintaining cash flow flexibility. Consider making prepayments during bonus periods to reduce tenure and save on interest costs. Your current EMI-to-income ratio appears sustainable, allowing room for other investments and emergency funds. The fixed payment schedule provides predictability for long-term financial planning. Monitor interest rate trends for potential refinancing opportunities. Maintain a 6-month EMI buffer in emergency funds. This loan decision demonstrates sound financial discipline and strategic asset acquisition. Focus on building additional income streams to accelerate loan closure. The structured repayment builds credit history and financial credibility. Consider tax benefits under Section 24 for home loans. Your financial health score reflects responsible borrowing practices and sustainable debt management.`,
+    sip: `Your SIP investment of ₹${values.monthlyAmount} monthly demonstrates excellent financial discipline and long-term wealth creation strategy. With an expected ${values.rate}% annual return over ${values.years} years, your investment could grow to ₹${result.maturityAmount}, showcasing the power of compounding. This systematic approach aligns perfectly with career growth phases, allowing you to increase contributions with salary increments. The rupee-cost averaging benefit reduces market volatility impact and builds substantial wealth over time. Consider increasing your SIP by 10-15% annually to accelerate wealth creation. Diversify across large-cap, mid-cap, and international funds for optimal risk-adjusted returns. Your investment horizon allows for equity exposure, maximizing growth potential. Tax benefits under Section 80C and LTCG exemptions enhance overall returns. This disciplined approach builds financial independence and supports major life goals. Monitor fund performance annually and rebalance if needed. Your consistent investment habit creates a strong foundation for retirement planning and wealth accumulation. The current allocation supports both growth and stability objectives effectively.`,
+    fd: `Your Fixed Deposit of ₹${values.principal} at ${values.rate}% for ${values.years} years provides guaranteed returns and capital protection, making it an excellent choice for conservative investors. The maturity amount of ₹${result.maturityAmount} offers predictable growth with zero market risk. This investment suits your risk profile and provides portfolio stability during volatile market conditions. Consider laddering multiple FDs with different maturity dates for better liquidity management. While FD returns may not beat inflation long-term, they serve as essential portfolio anchors and emergency fund components. Explore tax-saving FDs under Section 80C for additional benefits. Compare rates across banks and consider senior citizen benefits if applicable. Your conservative approach ensures capital preservation while generating steady income. Consider reinvesting maturity proceeds for compounding benefits. This FD strategy complements other growth investments and provides financial security. The guaranteed returns support short to medium-term financial goals effectively. Maintain some FD allocation for stability while exploring higher-yield opportunities for surplus funds. Your balanced approach demonstrates prudent financial planning and risk management.`,
+    rd: `Your Recurring Deposit of ₹${values.monthlyAmount} monthly at ${values.rate}% for ${values.years} years creates disciplined savings habits while ensuring guaranteed returns. The maturity value of ₹${result.maturityAmount} demonstrates steady wealth accumulation through systematic deposits. This approach builds financial discipline and creates a safety net for future goals. RD investments teach consistent saving behavior and provide liquidity at maturity. Consider automating deposits to avoid missed payments and penalties. Your systematic approach reduces the temptation to spend and builds substantial corpus over time. Compare RD rates across banks and credit unions for better returns. This conservative strategy complements other investments and provides portfolio stability. The guaranteed nature makes it ideal for short to medium-term goals like vacation, education, or emergency funds. Consider stepping up deposits annually with income growth. RD investments qualify for certain tax benefits and provide peace of mind. Your commitment to regular savings demonstrates excellent financial planning skills. This foundation supports larger investment goals and creates financial security for your family's future needs.`,
+    savings: `Your savings growth strategy of ₹${values.monthlyAmount} monthly at ${values.rate}% return over ${values.years} years projects a maturity value of ₹${result.maturityAmount}, indicating strong wealth-building potential. This systematic approach creates financial discipline while maximizing growth opportunities. Regular savings habits form the foundation of all successful financial plans and provide security during economic uncertainties. Consider diversifying savings across high-yield accounts, short-term deposits, and liquid funds for optimal returns. Your consistent approach demonstrates excellent financial discipline and long-term thinking. Automate transfers to ensure regular contributions and avoid spending temptations. Review and increase savings rate annually with income growth to accelerate wealth creation. This strategy provides emergency fund security while generating reasonable returns. Consider tax-efficient savings options like PPF or ELSS for additional benefits. Your savings discipline creates opportunities for larger investments and financial goals. Monitor inflation impact and adjust strategy accordingly. The compound growth effect over time significantly enhances your financial position. This foundation supports career flexibility and major life decisions. Your commitment to systematic savings builds lasting financial security and independence.`,
+    interest: `Your interest calculation reveals the power of compounding over time, with principal of ₹${values.principal} at ${values.rate}% for ${values.time} years generating ₹${result.totalInterest} in interest earnings. Understanding interest mechanics is crucial for making informed financial decisions across loans, investments, and savings products. Compound interest works as your financial ally in investments but against you in debt scenarios. This calculation helps optimize your financial strategy by comparing different products and terms. Consider the impact of frequency of compounding - monthly, quarterly, or annually - on your returns. Time horizon significantly affects interest accumulation, making early investment crucial for wealth building. Your interest awareness enables better negotiation with financial institutions and product selection. Factor in inflation when evaluating real returns on interest-bearing investments. Use this knowledge to accelerate debt repayment and maximize investment growth. Interest rate sensitivity analysis helps in making refinancing and investment timing decisions. This understanding supports career-aligned financial planning and goal achievement. Regular monitoring of interest rate trends provides opportunities for optimization. Your grasp of interest calculations demonstrates financial literacy and strategic thinking essential for long-term wealth creation and financial independence.`
+  };
+  
+  return analyses[calculatorType as keyof typeof analyses] || 'Comprehensive financial analysis indicates a balanced approach to wealth building with appropriate risk management and growth potential for your financial goals. Your systematic investment strategy demonstrates financial discipline and long-term thinking. Consider diversifying across asset classes for optimal risk-adjusted returns. Regular monitoring and annual reviews ensure alignment with changing financial goals and market conditions. This approach builds sustainable wealth while maintaining liquidity for opportunities and emergencies.';
+};
+
+export const getDeepAIAnalysis = async (calculatorType: string, values: any, result: any): Promise<any> => {
+  try {
+    let prompt = '';
+    
+    switch (calculatorType) {
+      case 'emi':
+        prompt = `Comprehensive EMI Analysis in exactly 200 words: Loan ₹${values.principal}, Rate ${values.rate}%, Tenure ${values.tenure} months, EMI ₹${result.monthlyPayment}. Analyze affordability, career impact, prepayment strategies, financial health, risk factors, and wealth building opportunities. Provide actionable insights for optimal loan management.`;
+        break;
+      case 'sip':
+        prompt = `Comprehensive SIP Analysis in exactly 200 words: Monthly ₹${values.monthlyAmount}, Return ${values.rate}%, Period ${values.years} years, Maturity ₹${result.maturityAmount}. Analyze growth potential, market risks, career alignment, tax benefits, portfolio diversification, and long-term wealth creation strategies.`;
+        break;
+      case 'fd':
+        prompt = `Comprehensive FD Analysis in exactly 200 words: Principal ₹${values.principal}, Rate ${values.rate}%, Years ${values.years}, Maturity ₹${result.maturityAmount}. Analyze safety factors, inflation impact, liquidity needs, tax implications, alternative investments, and portfolio optimization strategies.`;
+        break;
+      case 'expense':
+        prompt = `Provide a comprehensive expense analysis in exactly 200 words without any asterisks or special formatting. Total spent ₹${values.totalExpenses} in ${values.transactionCount} transactions (${values.period} view), average ₹${Math.round(values.averageTransaction)} per transaction. Top category: ${values.topCategory}. Analyze spending patterns, identify savings opportunities, suggest budget optimization, highlight overspending risks, recommend financial discipline strategies, and provide actionable money-saving insights for better financial health. Use plain text only.`;
+        break;
+      case 'business':
+        prompt = `Provide comprehensive business analysis in exactly 200 words without any asterisks or special formatting. Total sales ₹${values.totalSales} across ${values.totalTransactions} transactions over ${values.sessionsCount} days, average daily sales ₹${Math.round(values.averageDailySales)}. Best day: ₹${values.bestDay?.totalSales}, worst day: ₹${values.worstDay?.totalSales}. Analyze business performance, identify growth opportunities, suggest sales optimization strategies, recommend inventory management improvements, and provide actionable business insights for better profitability. Use plain text only.`;
+        break;
+      default:
+        return { analysis: generateMock200WordAnalysis(calculatorType, values, result), score: Math.floor(Math.random() * 30) + 70 };
+    }
+
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        messages: [
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
+        max_tokens: 250,
+        temperature: 0.7
+      })
+    });
+
+    const data = await response.json();
+    const analysis = data.choices[0]?.message?.content || generateMock200WordAnalysis(calculatorType, values, result);
+    
+    return {
+      analysis,
+      score: Math.floor(Math.random() * 30) + 70
+    };
+  } catch (error) {
+    console.error('Groq API Error:', error);
+    return {
+      analysis: generateMock200WordAnalysis(calculatorType, values, result),
+      score: Math.floor(Math.random() * 30) + 70
+    };
+  }
+};
+
+export const getAIInsight = getDeepAIAnalysis;
