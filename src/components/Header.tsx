@@ -59,7 +59,7 @@ const bottomRowItems = [
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex space-x-2 xl:space-x-3">
+          <nav className="hidden lg:flex space-x-5 xl:space-x-6">
             {topRowItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -86,7 +86,7 @@ const bottomRowItems = [
 
         {/* Bottom Row */}
         <div className="hidden lg:flex justify-end pr-20">
-          <nav className="flex space-x-2 xl:space-x-3">
+          <nav className="flex space-x-5 xl:space-x-6">
             {bottomRowItems.map((item) => {
               const Icon = item.icon;
               return (

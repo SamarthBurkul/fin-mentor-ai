@@ -98,7 +98,7 @@ FinSaarthi is a comprehensive financial management platform that combines AI tec
 - FD Calculator
 - Business Calculator
 
-### 13. **KANIMA AI Assistant**
+### 13. **FinSaarthi AI Assistant**
 - 24/7 AI chatbot for financial queries
 - Conversational financial advice
 - Quick question suggestions

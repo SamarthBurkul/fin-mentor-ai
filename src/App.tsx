@@ -108,7 +108,7 @@ function App() {
 
           <div className="border-t border-white/20 mt-8 pt-8 text-center text-gray-300">
             <p>
-              &copy; 2024 FinSaarthi AI — An AI-powered inclusive financial
+              &copy; 2025 FinSaarthi AI — An AI-powered inclusive financial
               platform. All rights reserved.
             </p>
             <p className="mt-2">

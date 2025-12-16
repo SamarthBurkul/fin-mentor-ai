@@ -12,7 +12,7 @@ const AIFinanceBot: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 1,
-      text: "Hi! I'm KANIMA AI, your smart finance buddy! 💰 Ask me anything about budgeting, investments, loans, or financial planning!",
+      text: "Hi! I'm FinSaarthi AI, your smart finance buddy! 💰 Ask me anything about budgeting, investments, loans, or financial planning!",
       sender: "bot",
       timestamp: new Date(),
     },
@@ -64,7 +64,7 @@ const AIFinanceBot: React.FC = () => {
               {
                 role: "system",
                 content:
-                  "You are KANIMA AI, a friendly Indian financial advisor. Give clear, practical advice on budgeting, investing, loans, credit score, and savings. Keep answers under 150 words and stay on finance topics.",
+                  "You are FinSaarthi AI, a friendly Indian financial advisor. Give clear, practical advice on budgeting, investing, loans, credit score, and savings. Keep answers under 150 words and stay on finance topics.",
               },
               { role: "user", content },
             ],
@@ -134,7 +134,7 @@ const AIFinanceBot: React.FC = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-playfair font-bold text-soft-white mb-4">
-            KANIMA{" "}
+            FinSaarthi{" "}
             <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
               AI Assistant
             </span>
@@ -156,7 +156,7 @@ const AIFinanceBot: React.FC = () => {
                     <Bot className="w-6 h-6 text-cyan-500" />
                   </div>
                   <div>
-                    <h3 className="text-white font-bold">KANIMA AI</h3>
+                    <h3 className="text-white font-bold">FinSaarthi AI</h3>
                     <p className="text-cyan-100 text-sm">
                       Your Smart Finance Buddy
                     </p>
@@ -298,7 +298,7 @@ const AIFinanceBot: React.FC = () => {
               <div className="relative -mt-16">
                 <img
                   src="/airobot.jpg"
-                  alt="KANIMA AI Assistant"
+                  alt="FinSaarthi AI Assistant"
                   className="w-[600px] h-[600px] object-contain mx-auto"
                 />
               </div>
