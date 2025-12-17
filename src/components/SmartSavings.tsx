@@ -203,7 +203,12 @@ const SmartSavings: React.FC = () => {
   }
 
   return (
-    <section className="py-16 bg-jet-black relative overflow-hidden">
+     <section className="py-16 relative overflow-hidden bg-[#0C2B4E]">
+  <div className="
+    absolute inset-0
+    bg-gradient-to-br from-black/40 to-slate-900/60
+    backdrop-blur-xl
+  "></div>
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-10 left-1/4 w-64 h-64 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-1/4 w-64 h-64 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full blur-3xl"></div>
