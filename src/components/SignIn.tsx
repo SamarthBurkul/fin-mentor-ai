@@ -166,7 +166,7 @@ const SignIn: React.FC<AuthPageProps> = ({
                 color: c.textSecondary,
               }}
             >
-              Fintech Secure
+               FinSaarthi
             </span>
           </div>
           <h1

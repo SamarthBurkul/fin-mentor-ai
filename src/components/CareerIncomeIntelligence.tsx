@@ -221,7 +221,12 @@ const CareerIncomeIntelligence: React.FC = () => {
   };
 
   return (
-    <section className="py-16 bg-jet-black relative overflow-hidden">
+    <section className="py-16 relative overflow-hidden bg-[#0C2B4E]">
+  <div className="
+    absolute inset-0
+    bg-gradient-to-br from-black/40 to-slate-900/60
+    backdrop-blur-xl
+  "></div>
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-10 left-1/4 w-64 h-64 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-1/4 w-64 h-64 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full blur-3xl"></div>
@@ -241,7 +246,7 @@ const CareerIncomeIntelligence: React.FC = () => {
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8">
               {/* Input Form */}
-              <div className="bg-charcoal-gray rounded-2xl p-8 border border-slate-gray/20">
+              <div className="bg-gradient-to-br from-emerald-500/10 to-blue-500/10 rounded-2xl p-8 border border-emerald-500/20">
                 <h3 className="text-2xl font-bold text-soft-white mb-6 text-center">
                   🎯 Enter Your Career Profile
                 </h3>
