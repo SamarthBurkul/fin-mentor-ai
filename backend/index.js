@@ -14,6 +14,7 @@ connectDB();
 // 🔥 ROUTES
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/savings', require('./routes/savings'));
+app.use('/api/investment', require('./routes/investment'));
 
 // Health check
 app.get('/api/health', (req, res) => {
