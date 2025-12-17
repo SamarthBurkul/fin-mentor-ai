@@ -107,33 +107,37 @@ const Hero: React.FC<HeroProps> = ({ setActiveSection }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
-      <section className="relative z-10 pt-16 pb-12">
-        <div className="container mx-auto px-4 text-center">
-          <img
-            src="/finsaarthi.png"
-            alt="FinSaarthi"
-            className="h-48 md:h-64 mx-auto mb-6 rounded-2xl border-4 border-purple-500 shadow-lg"
-          />
-          <h1 className="text-3xl md:text-4xl text-yellow-400 font-bold mb-4">
-            FinSaarthi – Your Smart AI Finance Guide
-          </h1>
-          <p className="text-gray-200 max-w-3xl mx-auto">
-            Empowering every Indian with AI-driven financial insights, tools and
-            education.
-          </p>
-        </div>
-      </section>
+    // No min-h-screen or full black background here; App.tsx already handles page layout
+    <section className="relative overflow-hidden">
+      {/* Hero top section */}
+      <div className="pt-8 pb-6 text-center">
+        <img
+          src="/finsaarthi.png"
+          alt="FinSaarthi"
+          className={`h-40 md:h-52 mx-auto mb-6 rounded-2xl border-4 border-purple-500 shadow-lg transition-opacity duration-700 ${
+            animateIn ? "opacity-100" : "opacity-0"
+          }`}
+        />
+        <h1 className="text-3xl md:text-4xl text-yellow-400 font-bold mb-4">
+          FinSaarthi – Your Smart AI Finance Guide
+        </h1>
+        <p className="text-gray-800 md:text-gray-900 max-w-3xl mx-auto">
+          Empowering every Indian with AI-driven financial insights, tools and
+          education.
+        </p>
+      </div>
 
-      <section className="relative z-10 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto px-4">
+      {/* Features grid – fills the 1200px container from App.tsx */}
+      <div className="py-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <div
+              <button
+                type="button"
                 key={index}
                 onClick={feature.action}
-                className={`cursor-pointer bg-gradient-to-br ${feature.gradient} rounded-2xl p-6 hover:scale-105 transition`}
+                className={`cursor-pointer bg-gradient-to-br ${feature.gradient} rounded-2xl p-6 hover:scale-105 transition transform text-left focus:outline-none`}
               >
                 <div className="flex justify-center mb-4">
                   <Icon className="w-8 h-8 text-white" />
@@ -144,12 +148,12 @@ const Hero: React.FC<HeroProps> = ({ setActiveSection }) => {
                 <p className="text-sm text-white/90 text-center mt-2">
                   {feature.description}
                 </p>
-              </div>
+              </button>
             );
           })}
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 };
 

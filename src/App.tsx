@@ -35,10 +35,11 @@ function App() {
   }, []);
 
   const handleEmailSignUp = async (values: SignUpValues) => {
-    // SignUp handles API call
+    // SignUp component sends request and stores token
   };
 
   const handleEmailSignIn = async (values: SignInValues) => {
+    // SignIn component sets token; here just flip state
     setIsAuthenticated(true);
   };
 
@@ -100,6 +101,8 @@ function App() {
         return <SmartBudgetAI />;
       case "government-benefits":
         return <GovernmentBenefits />;
+      case "leaderboard":
+        return <Leaderboard />;
       default:
         return <Hero setActiveSection={handleSetActiveSection} />;
     }
@@ -120,7 +123,7 @@ function App() {
       />
     );
   }
-  
+
   return (
     <div className="min-h-screen bg-cream-white">
       <Header
@@ -128,7 +131,12 @@ function App() {
         setActiveSection={handleSetActiveSection}
       />
 
-      <main className="fade-in">{renderActiveSection()}</main>
+      {/* Main content centered and wider for all tools (including GovernmentBenefits) */}
+      <main className="fade-in">
+        <div className="mx-auto max-w-[1200px] px-4 lg:px-8 py-8">
+          {renderActiveSection()}
+        </div>
+      </main>
 
       <footer className="luxury-gradient text-soft-white py-12">
         <div className="container mx-auto px-4">
