@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, AlertTriangle, Download, Target, DollarSign, BarChart3, Shield, CheckCircle, XCircle, Info } from 'lucide-react';
+import { AlertTriangle, Download, Target, BarChart3, Shield, CheckCircle, XCircle, Info } from 'lucide-react';
 import jsPDF from 'jspdf';
 import investmentService from '../api/investmentService';
 
