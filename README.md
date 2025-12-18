@@ -19,9 +19,8 @@ FinSaarthi is built on the belief that **financial literacy should be intelligen
 
 ***
 
-<<<<<<< HEAD
 
-### 4. **My Government Benefits**
+### 1. **My Government Benefits**
 - Find eligible government schemes
 - Personalized benefit recommendations
 - Scheme analysis and verification
@@ -29,7 +28,7 @@ FinSaarthi is built on the belief that **financial literacy should be intelligen
 - Fraud protection alerts
 - PDF report generation
 
-### 5. **Smart Savings**
+### 2. **Smart Savings**
 - Daily savings goal tracker
 - Digital piggy bank
 - Wealth projections (10 days to 1 year)
@@ -38,14 +37,14 @@ FinSaarthi is built on the belief that **financial literacy should be intelligen
 - Streak tracking
 
 
-### 6. **Financial Education**
+### 3. **Financial Education**
 - Banking 101: Account types, cards, loans, safety tips
 - Investment basics
 - Tax planning
 - Retirement planning
 - Interactive learning modules
 
-### 7. **Advanced Calculator Hub**
+### 4. **Advanced Calculator Hub**
 - EMI Calculator
 - SIP Calculator
 - Retirement Calculator
@@ -54,12 +53,11 @@ FinSaarthi is built on the belief that **financial literacy should be intelligen
 - FD Calculator
 - Business Calculator
 
-### 8. **FinSaarthi AI Assistant**
+### 5. **FinSaarthi AI Assistant**
 - 24/7 AI chatbot for financial queries
 - Conversational financial advice
 - Quick question suggestions
 - Real-time responses using Groq API
-=======
 🎯 Why FinSaarthi?  
 ------------------
 
@@ -88,7 +86,6 @@ Most people juggle multiple apps and spreadsheets: one for expenses, one for EMI
 - Primary CTAs: **Get Started** and **Explore Tools** for quick onboarding.  
 - Highlight counters (AI tools, calculators, users, accuracy) to position FinSaarthi as a complete platform.  
 - “About FinSaarthi” block describing the mission in simple, human language.
->>>>>>> 99142d7b0abca227925de45ef9e09d53a48fb3cf
 
 ***
 
@@ -117,7 +114,6 @@ Most people juggle multiple apps and spreadsheets: one for expenses, one for EMI
 - Encourages users to move from random spending to **intentional saving**.  
 - Pairs well with the calculator outputs and AI guidance.
 
-<<<<<<< HEAD
 ```
 FIN-MENTOR-AI/
 ├── src/
@@ -147,9 +143,7 @@ FIN-MENTOR-AI/
 ├── tsconfig.json                        # TypeScript config
 └── README.md                            # This file
 ```
-=======
 #### 💹 InvestCompare – Smart Investment Comparator
->>>>>>> 99142d7b0abca227925de45ef9e09d53a48fb3cf
 
 - Dedicated page to configure and compare investment options like:  
   - Gold  
@@ -329,25 +323,10 @@ Deploy the frontend (e.g., Vercel) and backend (e.g., Render / Railway / VPS) wi
 🤝 Team & Contributions  
 -----------------------
 
-<<<<<<< HEAD
-### Top Row (4 items)
-- Home
-- SmartBudget AI (with Expense Tracker)
-- Learn (with Banking 101)
-- Calculators (with Business Calculator)
-
-### Bottom Row (4 items)
-
-- My Benefits
-- Smart Savings
-- Invest Smart
-- AI Assistant
-=======
 FinSaarthi is built by a student team as part of an open‑innovation initiative in fintech.  
 Suggestions, bug reports, and thoughtful contributions are welcome.
 
 **How to contribute:**
->>>>>>> 99142d7b0abca227925de45ef9e09d53a48fb3cf
 
 1. Fork this repository.  
 2. Create a feature branch (`feature/your-idea`).  
@@ -356,20 +335,8 @@ Suggestions, bug reports, and thoughtful contributions are welcome.
 
 ***
 
-<<<<<<< HEAD
-✅ **13 Expense Categories** with detailed tracking  
-✅ **AI-Powered Insights** across all major features  
-✅ **Dark Theme UI** with gradient accents  
-✅ **Interactive Charts** for data visualization  
-✅ **PDF Report Generation** for key features  
-✅ **Real-time Calculations** for financial tools  
-✅ **Fraud Protection** with emergency actions  
-✅ **Government Scheme Finder** with eligibility check  
-✅ **Financial Education** with comprehensive content  
-=======
 📄 License  
 ---------
->>>>>>> 99142d7b0abca227925de45ef9e09d53a48fb3cf
 
 FinSaarthi is currently intended for **hackathon, demo, and educational use**.  
 For commercial usage or large‑scale deployments, please contact the maintainers.
