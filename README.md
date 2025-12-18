@@ -1,313 +1,351 @@
-# FinSaarthi - Your Smart Finance Guide 💰
+# FinSaarthi – AI Finance Companion for India 💰🇮🇳  
 
-**AI-Powered Financial Platform for Everyone**
+FinSaarthi is an AI‑powered, open‑innovation personal finance platform that helps Indian users understand, plan, and optimize their money.  
+It brings together budgeting, savings, investments, learning, and government benefits in a single, beautifully‑designed experience.
 
-FinSaarthi is a comprehensive financial management platform that combines AI technology with practical financial tools to help users manage money, track expenses, protect against fraud, and achieve financial goals.
+***
 
----
+## 🌍 Vision – Open Innovation for Financial Freedom
 
-## 🌟 Key Features
+FinSaarthi is built on the belief that **financial literacy should be intelligent, inclusive, and accessible**.
 
-### 1. **Smart Budget AI**
-- AI-powered budget analysis and recommendations
-- Personalized financial advice based on income and expenses
-- Smart expense tracking with 13 categories
-- Daily/Weekly/Monthly expense charts (Bar & Line)
-- 30 days of transaction history
+- **Open Innovation** – Built using modern web technologies, modular APIs, and AI models that can be extended by the community.  
+- **India‑First** – Rupee‑based flows, Indian expense categories, local government schemes, and relevant examples.  
+- **AI‑First Experience** – Not just calculators, but an intelligent companion that explains the *why* behind every financial decision.  
 
-### 2. **Smart Expense Tracker**
-- Track expenses across 13 categories: Food, Travel, Shopping, Education, Bills, Family, Entertainment, Healthcare, Fitness, Investment, Insurance, Fuel, Others
-- Visual analytics with interactive charts
-- AI-powered spending insights
-- Dark theme UI with emerald/teal gradients
+> FinSaarthi = “Saarthi” (guide) + AI – your digital co‑pilot for smarter money choices.
 
-### 3. **Smart Business Calculator**
-- Real-time business profit/loss tracking
-- Start/Stop timer for business sessions
-- Automatic calculation storage
-- Business analytics with daily/weekly/monthly charts
-- AI-powered business insights
-- 30 days of dummy data for testing
+***
 
-### 4. **Credit Score Doctor**
-- Credit score analysis and improvement tips
-- Personalized credit health assessment
-- AI-powered recommendations
-- Credit building strategies
+## 🔑 Problem Statement
 
-### 5. **CyberShield - Fraud Protection**
-- AI fraud detector for suspicious messages/calls
-- Real-time scam analysis
-- Emergency action panel (Call 1930, Block UPI/Cards)
-- Common fraud types education
-- Post-fraud recovery guide
-- Scam psychology analysis
+Most people in India juggle multiple apps and spreadsheets:  
+one for expenses, one for EMIs, one for savings, one for learning, and none for unbiased advice.
 
-### 6. **LoanGuard - Loan Safety Analyzer**
-- AI-powered loan risk assessment
-- Interest rate analysis
-- EMI affordability check
-- Processing fee evaluation
-- Hidden charges detection
-- PDF report generation
+**Key pain points:**
 
-### 7. **PolicySense AI - Insurance Analyzer**
-- Compare multiple insurance policies
-- Individual policy analysis
-- AI-powered recommendations
-- Hidden clause detection
-- Claim safety scoring
-- Support for Health, Life, and Vehicle insurance
+- Fragmented tools and no single view of money.  
+- Low awareness of long‑term savings and investment impact.  
+- Confusing loan & EMI decisions.  
+- Under‑utilization of government schemes and benefits.  
 
-### 8. **My Government Benefits**
-- Find eligible government schemes
-- Personalized benefit recommendations
-- Scheme analysis and verification
-- Document guidance
-- Fraud protection alerts
-- PDF report generation
+**FinSaarthi solves this by:**
 
-### 9. **Smart Savings**
-- Daily savings goal tracker
-- Digital piggy bank
-- Wealth projections (10 days to 1 year)
-- Life goal attachment
-- AI savings habit analysis
-- Streak tracking
+- Unifying **Budgeting + Savings + Investments + Education + AI Chat** into one platform.  
+- Providing **interactive calculators** and **data visualizations** that make numbers intuitive.  
+- Using **AI explanations** to turn complex finance into simple, human language.
 
-### 10. **Career Insights AI**
-- Career path recommendations
-- Skill gap analysis
-- Salary insights
-- Job market trends
-- Personalized career roadmap
+***
 
-### 11. **Financial Education**
-- Banking 101: Account types, cards, loans, safety tips
-- Investment basics
-- Tax planning
-- Retirement planning
-- Interactive learning modules
+## 🌟 Feature Highlights
 
-### 12. **Advanced Calculator Hub**
-- EMI Calculator
-- SIP Calculator
-- Retirement Calculator
-- Tax Calculator
-- Loan Comparison
-- FD Calculator
-- Business Calculator
+### 1. FinSaarthi AI Assistant
 
-### 13. **FinSaarthi AI Assistant**
-- 24/7 AI chatbot for financial queries
-- Conversational financial advice
-- Quick question suggestions
-- Real-time responses using Groq API
+Your 24/7 finance buddy:
 
----
+- Chatbot that answers questions on budgeting, loans, investing, and personal finance.  
+- Ready‑made “quick prompts” for common scenarios (college budget, SIP start, emergency fund, etc.).  
+- Contextual, conversational responses using LLMs (Groq / similar).  
+- Designed as a *guide*, not a product‑pushing bot.
 
-## 🛠️ Technology Stack
+***
 
-- **Frontend**: React + TypeScript
-- **Styling**: Tailwind CSS
-- **Charts**: Recharts
-- **AI**: Groq API (LLaMA 3.1-8b-instant)
-- **PDF Generation**: jsPDF
-- **Build Tool**: Vite
-- **Icons**: Lucide React
+### 2. SmartBudget AI & Expense Analytics
 
----
+Understand where your money actually goes:
 
-## 🎨 Design System
+- Summary cards for **Total Spent**, **Transactions**, **Average Transaction**, and **Top Category**.  
+- Time filters: **Daily**, **Weekly**, **Monthly**.  
+- Visuals:
+  - Monthly spending trend line chart.  
+  - Category distribution pie chart.  
+  - Top categories bar chart.  
+- “AI Insights” button to highlight overspending, optimization areas, and suggested budget caps.
 
-### Color Palette
-- **Primary**: Emerald (#10B981), Teal (#14B8A6), Blue (#3B82F6)
-- **Background**: Jet Black (#0A0A0A), Charcoal Gray (#1A1A1A)
-- **Text**: Soft White (#F5F5F5), Slate Gray (#94A3B8)
-- **Accents**: Gold (#FFD700), Neon Blue (#00E5FF)
+***
 
-### Typography
-- **Headings**: Playfair Display
-- **Body**: Inter
-- **UI Elements**: Poppins
+### 3. Advanced Financial Calculator Suite
 
----
+Professional‑grade calculators with a friendly UI:
 
-## 📁 Project Structure
+- **EMI Calculator** – Loan amount, rate, tenure, and monthly EMI.  
+- **SIP Calculator** – Monthly investment vs future corpus.  
+- **FD & RD Calculators** – Maturity value and effective yield.  
+- **Savings Growth & Interest Calculators** – Future value simulations.  
+- **Business / Profit Calculator** – Basic revenue‑cost‑profit analytics for small businesses.
 
-```
-KANIMA/
+Each calculator:
+
+- Uses intuitive input fields and validation.  
+- Responds instantly with computed results.  
+- Is grouped under a dedicated calculators hub.
+
+***
+
+### 4. Smart Savings & Goal Thinking
+
+FinSaarthi encourages a **savings‑first mindset**:
+
+- Uses data from expenses and calculators to show saving potential.  
+- Helps users mentally connect daily habits with long‑term goals.  
+- Can be extended to attach goals like “Laptop”, “Education”, “Emergency Fund”, etc.
+
+***
+
+### 5. Smart Investment Comparator (Backend‑Driven)
+
+Make better investment choices:
+
+- Compare multiple options (FDs, SIPs, mutual funds, etc.) on risk, return, and time horizon.  
+- Backend APIs use Node.js + MongoDB to store and compute comparison stats.  
+- AI can generate natural‑language summaries explaining trade‑offs.
+
+***
+
+### 6. Learn Hub – Study, Leaderboard & Badges
+
+Finance learning, but make it fun:
+
+- **Study Dashboard** with modules and concept summaries.  
+- **Top Learners leaderboard** with points and ranks.  
+- **Badges** like Finance Expert, Investment Guru, Fraud Fighter, Quiz Master.  
+- Encourages consistent learning through gamification – ideal for students and early professionals.
+
+***
+
+### 7. Government Benefits Explorer (WIP / Extensible)
+
+A powerful social‑impact module:
+
+- Profile form with fields like age, income, state, category (GEN/OBC/SC/ST/EWS), occupation, etc.  
+- Planned AI engine to:
+  - Suggest relevant Indian government schemes.  
+  - Explain eligibility, required documents, and application steps.  
+  - Flag fraud risks and unofficial portals.  
+
+Even as a work‑in‑progress, it showcases how **open innovation + AI** can support public welfare.
+
+***
+
+## 🧱 Architecture Overview
+
+### Frontend Stack
+
+- **Framework:** React + TypeScript  
+- **Bundler:** Vite  
+- **Styling:** Tailwind CSS with custom dark theme + gradient tokens  
+- **Charts:** Recharts  
+- **State:** React hooks & local state  
+- **UX:** Responsive SPA with navbar navigation (Home, AI Chat, Tools, AI Tools, Learn, Auth).
+
+### Backend Stack
+
+- **Runtime:** Node.js  
+- **Framework:** Express.js  
+- **Database:** MongoDB (Mongoose models)  
+- **Core APIs:**
+  - `/api/auth` – Sign Up, Sign In, JWT issuance.  
+  - `/api/savings` – Savings & expense logic.  
+  - `/api/investment` – Investment comparison.  
+  - `/api/gov` – Government benefits AI (planned / WIP).  
+- **Security:** JWT middleware for protected routes.
+
+### AI & Integrations
+
+- LLM provider: Groq / compatible models (e.g., LLaMA family).  
+- Used for:
+  - Chat assistant.  
+  - Budget and savings insights.  
+  - Government benefits analysis (planned).  
+- All secrets are injected via environment variables (never committed).
+
+***
+
+## 🎨 Design Language
+
+FinSaarthi’s UI is designed to feel like a **future finance cockpit**:
+
+- **Colors:**  
+  - Background – Jet Black, Deep Navy.  
+  - Primary – Emerald, Teal, Neon Blue.  
+  - Accents – Gold, Soft gradients for CTAs.  
+- **Typography:**  
+  - Headings – elegant display font for a premium feel.  
+  - Body – modern sans‑serif for readability.  
+- **Patterns:**  
+  - Card‑based sections.  
+  - Glowing borders and hover effects.  
+  - Iconography inspired by banking, analytics, and AI.
+
+***
+
+## 📁 Project Structure (High Level)
+
+```bash
+finsaarthi-ai/
+├── backend/
+│   ├── config/
+│   │   └── db.js
+│   ├── controllers/
+│   │   ├── savingsController.js
+│   │   ├── investmentController.js
+│   │   └── govController.js
+│   ├── middleware/
+│   │   └── auth.js
+│   ├── models/
+│   │   ├── user.js
+│   │   ├── saving.js
+│   │   ├── InvestmentComparison.js
+│   │   └── gov.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── savings.js
+│   │   ├── investment.js
+│   │   └── gov.js
+│   └── index.js
+│
 ├── src/
+│   ├── api/
+│   │   ├── savingsService.ts
+│   │   ├── investmentService.ts
+│   │   └── govService.ts
 │   ├── components/
-│   │   ├── Header.tsx                    # Navigation bar
-│   │   ├── Hero.tsx                      # Landing page
-│   │   ├── SmartBudgetAI.tsx            # Budget analysis
-│   │   ├── SmartExpenseTracker.tsx      # Expense tracking
-│   │   ├── SmartBusinessCalculator.tsx  # Business calculator
-│   │   ├── CreditScoreDoctor.tsx        # Credit analysis
-│   │   ├── CyberShield.tsx              # Fraud protection
-│   │   ├── LoanGuard.tsx                # Loan analyzer
-│   │   ├── PolicySenseAI.tsx            # Insurance analyzer
-│   │   ├── GovernmentBenefits.tsx       # Government schemes
-│   │   ├── SmartSavings.tsx             # Savings tracker
-│   │   ├── CareerInsightsAI.tsx         # Career guidance
-│   │   ├── FinancialEducation.tsx       # Learning modules
-│   │   ├── AdvancedCalculatorHub.tsx    # Calculator tools
-│   │   └── AIFinanceBot.tsx             # AI chatbot
-│   ├── data/
-│   │   ├── expenseData.ts               # Expense dummy data
-│   │   └── businessData.ts              # Business dummy data
-│   ├── utils/
-│   │   ├── groqApi.ts                   # Groq API integration
-│   │   └── educationGroq.ts             # Education AI
-│   ├── App.tsx                          # Main app component
-│   └── main.tsx                         # Entry point
-├── .env                                 # Environment variables
-├── .gitignore                           # Git ignore rules
-├── package.json                         # Dependencies
-├── tailwind.config.js                   # Tailwind configuration
-├── tsconfig.json                        # TypeScript config
-└── README.md                            # This file
+│   │   ├── Header.tsx
+│   │   ├── Hero.tsx
+│   │   ├── AIFinanceBot.tsx
+│   │   ├── SmartBudgetAI.tsx
+│   │   ├── SmartSavings.tsx
+│   │   ├── SmartInvestmentComparator.tsx
+│   │   ├── AdvancedCalculators.tsx
+│   │   ├── GovernmentBenefits.tsx
+│   │   ├── StudyDashboard.tsx
+│   │   ├── SignIn.tsx
+│   │   ├── SignUp.tsx
+│   │   └── shared UI components...
+│   ├── App.tsx
+│   └── main.tsx
+│
+├── public/
+├── package.json
+├── backend/package.json
+├── tailwind.config.js
+├── tsconfig.json
+└── README.md
 ```
 
----
 
-## 🚀 Getting Started
+***
+
+## ⚙️ Getting Started
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- npm or yarn
 
-### Installation
+- Node.js 18+  
+- npm or yarn  
+- MongoDB URI (local or Atlas)  
+- AI API key (Groq / similar)
 
-1. **Clone the repository**
+### 1. Clone
+
 ```bash
-git clone <repository-url>
-cd KANIMA
+git clone https://github.com/SamarthBurkul/finsaarthi-ai.git
+cd finsaarthi-ai
 ```
 
-2. **Install dependencies**
+### 2. Install Dependencies
+
 ```bash
+# Frontend
 npm install
+
+# Backend
+cd backend
+npm install
+cd ..
 ```
 
-3. **Set up environment variables**
-Create a `.env` file in the root directory:
+### 3. Environment Variables
+
+**Frontend** – create `.env` in project root:
+
 ```env
-VITE_GROQ_API_KEY=your_groq_api_key_here
+VITE_API_BASE_URL=http://localhost:5000
+VITE_GROQ_API_KEY=your_llm_key_here
 ```
 
-4. **Run development server**
+**Backend** – create `backend/.env`:
+
+```env
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_strong_secret_here
+PORT=5000
+PERPLEXITY_API_KEY=your_optional_perplexity_key
+```
+
+> Make sure `.env` files are in `.gitignore` so secrets are never pushed.
+
+### 4. Run Locally
+
 ```bash
+# Backend
+cd backend
+npm run dev
+
+# Frontend (new terminal)
+cd ..
 npm run dev
 ```
 
-5. **Build for production**
+Open: `http://localhost:5173`.
+
+### 5. Production Build
+
 ```bash
 npm run build
 ```
 
----
+Deploy the frontend (e.g., Vercel) and backend (e.g., Render/Railway/VPS) using the same environment variables.
 
-## 🔐 Security
+***
 
-- API keys stored in `.env` file (not committed to Git)
-- Environment variables accessed via `import.meta.env.VITE_*`
-- `.env` file included in `.gitignore`
-- No hardcoded credentials in source code
+## 🔐 Security & Privacy
 
----
+- JWT authentication for user‑specific features.  
+- No bank logins or sensitive financial account integration.  
+- Secret keys stored in environment variables only.  
+- Backend validates requests and handles errors gracefully.
 
-## 📊 Data Management
+***
 
-### Dummy Data
-- **Expense Tracker**: 30 days of realistic Indian expense scenarios
-- **Business Calculator**: 30 days of business transaction data
-- Data generated programmatically for testing and demonstration
+## 🧭 Roadmap – Future Open‑Innovation Ideas
 
-### AI Integration
-- All AI features use Groq API with LLaMA 3.1-8b-instant model
-- Prompts structured to provide plain text analysis
-- Fallback responses for API failures
-- JSON parsing with error handling
+- Multilingual interface (Hindi, Marathi, Tamil, etc.).  
+- Deeper goal‑based planning (“buy house”, “education abroad”, “retirement”).  
+- More quizzes and challenges in Learn Hub.  
+- Community‑driven templates and shared budgets.  
+- Stronger integration with verified government scheme data sources.
 
----
+***
 
-## 🎯 Navigation Structure
+## 🤝 Team & Contributions
 
-### Top Row (7 items)
-- Home
-- SmartBudget AI (with Expense Tracker)
-- Credit Doctor
-- CyberShield
-- Career Insights
-- Learn (with Banking 101)
-- Calculators (with Business Calculator)
+FinSaarthi is built by a student team as part of an open‑innovation initiative.  
+We welcome ideas, discussions, and contributions that extend the platform responsibly.
 
-### Bottom Row (8 items)
-- LoanGuard
-- PolicySense
-- My Benefits
-- Smart Savings
-- Invest Smart
-- Tax Planner
-- Retirement
-- AI Assistant
+If you’d like to contribute:
 
----
+1. Fork the repo.  
+2. Create a feature branch.  
+3. Commit and push your changes.  
+4. Open a pull request describing your improvement.
 
-## 🌈 Key Highlights
-
-✅ **13 Expense Categories** with detailed tracking  
-✅ **AI-Powered Insights** across all major features  
-✅ **Dark Theme UI** with gradient accents  
-✅ **Interactive Charts** for data visualization  
-✅ **PDF Report Generation** for key features  
-✅ **Real-time Calculations** for financial tools  
-✅ **Fraud Protection** with emergency actions  
-✅ **Government Scheme Finder** with eligibility check  
-✅ **Career Guidance** with AI recommendations  
-✅ **Financial Education** with comprehensive content  
-
----
-
-## 📱 Responsive Design
-
-- Mobile-first approach
-- Tablet and desktop optimized
-- Touch-friendly interface
-- Adaptive layouts
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a pull request
-
----
+***
 
 ## 📄 License
 
-This project is proprietary software. All rights reserved.
+This project is currently intended for **hackathon and educational use**.  
+For commercial usage or large‑scale deployments, please contact the maintainers.
 
----
+***
 
-## 👨‍💻 Developer
-
-**SK WEBSITES**  
-Smart Finance Solutions for Everyone
-
----
-
-## 📞 Support
-
-For support and queries, please contact through the website's AI Assistant or reach out to the development team.
-
----
-
-**Built with ❤️ using React, TypeScript, and AI Technology**
+**FinSaarthi – your AI co‑pilot for smarter, more confident financial decisions.**
