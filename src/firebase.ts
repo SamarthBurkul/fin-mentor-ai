@@ -1,14 +1,15 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
-// Firebase config - Replace with your actual values from Firebase Console
+// Firebase config using Vite environment variables
+// These values are securely pulled from Vercel's Environment Variables
 const firebaseConfig = {
-  apiKey: "AIzaSyAJhlKFihWkXXgSA5O169IvNJw_ra1WCeg",
-  authDomain: "finsaarthi-89698.firebaseapp.com",
-  projectId: "finsaarthi-89698",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
   storageBucket: "finsaarthi-89698.firebasestorage.app",
   messagingSenderId: "609023109118",
-  appId: "1:609023109118:web:ca0c394c4dacb0fadf42af"
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 // Initialize Firebase (only if not already initialized)
